@@ -1,4 +1,26 @@
 from markdown2 import Markdown
+import argparse
+
+parser = argparse.ArgumentParser(
+    description="Convert a markdown folder to an HTML folder"
+)
+parser.add_argument(
+    "-i",
+    "--input",
+    help="open the folder containing the markdown files to convert",
+    action="store_true",
+)
+parser.add_argument(
+    "-o",
+    "--output",
+    help="create the folder containing the files converted to HTML",
+    action="store_true",
+)
+args = parser.parse_args()
+if args.input:
+    print("Open folder is '{}'".format(__file__))
+if args.output:
+    print("Create folder is '{}'".format(__file__))
 
 md = Markdown()
 
