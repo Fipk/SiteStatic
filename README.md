@@ -18,7 +18,8 @@ Pour utiliser l'application, il vous faudra tout d'abord installer différentes 
 
 Ensuite ouvrez dans *une invite de commande* le fichier `main.py` puis ajoutez lui les commandes suivantes:
 * `-i` ou `--input-directory` suivi du nom du fichier **Markdown** que vous souhaitez convertir ;
-* `-o` ou `--output-directory` suivi du nom du fichier **HTML**.
+* `-o` ou `--output-directory` suivi du nom du fichier **HTML** ;
+* `-h` ou `--help` pour afficher le manuel de l'application.
 
 ## Licence
 MIT License
