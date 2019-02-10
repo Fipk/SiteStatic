@@ -1,29 +1,53 @@
-changed_lines = None
+from markdown2 import Markdown
+import argparse
 
-# Écriture dans le fichier html_file.html
-with open("./file_generated.html", "w") as sorted_file:
-    # Interprétation des caractères spéciaux
-    sorted_file.write("""<meta charset="UTF-8"/>\n\n""")
-    # Lecture du fichier test_file.md
-    with open("./input_file.md") as open_file:
+parser = argparse.ArgumentParser(
+    description="Convert a markdown folder to an HTML folder"
+)
+parser.add_argument(
+    "-i",
+    "--input",
+    help="open the folder containing the markdown files to convert",
+    action="store_true",
+)
+parser.add_argument(
+    "-o",
+    "--output",
+    help="create the folder containing the files converted to HTML",
+    action="store_true",
+)
+args = parser.parse_args()
+if args.input:
+    print("Open folder is '{}'".format(__file__))
+if args.output:
+    print("Create folder is '{}'".format(__file__))
+
+md = Markdown()
+
+# Écriture dans le fichier HTML
+with open("./index.html", "w") as exit_file:
+    exit_file.write("<meta charset='UTF-8'/>\n")
+    # Lecture du fichier Markdown
+    with open("./input_file.md", "r") as open_file:
         for lines in open_file:
-            lines = "  " + lines
             print(lines)
-            # Convertion des titres Markdown
-            if lines.startswith("  # ") == True:
-                changed_lines = lines.replace("  # ", "<h1>")
-                changed_lines = changed_lines.replace("\n", "</h1>\n")
-                sorted_file.write(changed_lines)
-            elif (
-                lines.startswith("  ## ") == True
-                or lines.startswith("    ## ") == True
+            # Gestion des titres indentés
+            if lines.startswith("  ##") == True:
+                lines = lines.replace("  ## ", "<h2>")
+                lines = lines.replace("\n", "</h2>\n")
+            # Gestion des liens URL
+            if (
+                lines.startswith("http") == True
+                or lines.startswith("* http") == True
             ):
-                changed_lines = lines.replace("  ## ", "<h2>")
-                changed_lines = changed_lines.replace("\n", "</h2>\n")
-                sorted_file.write(changed_lines)
-            elif lines.startswith("  ### ") == True:
-                changed_lines = lines.replace("  ### ", "<h3>")
-                changed_lines = changed_lines.replace("\n", "</h3>\n")
-                sorted_file.write(changed_lines)
-            else:
-                sorted_file.write(lines)
+                lines = lines.replace("http", '<a href="http')
+                lines = lines.replace("\n", '">hyperlien</a>\n')
+            elif lines.startswith("un texte") == True:
+                exit_file.write("<p>")
+                lines = lines.replace("http", '<a href="http')
+                lines = lines.replace(
+                    ".com et encore du texte",
+                    '.com">hyperlien</a> et encore du texte</p>',
+                )
+            lines = md.convert(lines)
+            exit_file.write(lines)
