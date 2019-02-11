@@ -1,22 +1,25 @@
 # Importation des librairies
 import markdown2
 import argparse
+import os
 
 def convert_MdFile_to_HTMLFile(inputFile, outputFile):
     """
     Fonction gérant la conversion des fichiers Markdown en fichiers HTML
     """
-    # Création et écriture du fichier HTML
-    with open(f"./{outputFile}.html", "w") as output_file:
-        # Ouverture du fichier et lecture du fichier Marckdown
-        with open(f"./{inputFile}.md", "r") as input_file:
+    # Création d'une liste avec tous les fichiers Markdown
+    folder = os.listdir(inputFolder)
+    for files in folder:
+        f = open(f'{inputFolder}/{files}', "r")
+        titleFile = os.path.splitext(files)[0]
+        print("Les fichiers Markdown ont bien été convertis en HTML.")
+        HTMLFile = open(f"{outputFolder}/{titleFile}.html", "w")
             # Ajout de l'en-tête
-            output_file.write("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'/>\n\t<title>MDtoHTML</title>\n\t<link rel='stylesheet' type='text/css' href='main.css'/>\n</head>\n<body>\n")
+            HTMLFile.write("<!DOCTYPE html>\n<html>\n<head>\n\t<meta charset='utf-8'/>\n\t<title>MDtoHTML</title>\n\t<link rel='stylesheet' type='text/css' href='main.css'/>\n</head>\n<body>\n")
             # Conversion du fichier Markdown en HTML
-            for lines in input_file:
-                output_file.write(markdown2.markdown(lines))
+            HTMLFile.write(markdown2.markdown(f.read()))
             # Fermeture des balises "body" et "/html"
-            output_file.write("</body>\n</html>")
+            HTMLFile.write("\n</body>\n</html>")
 
 print("Générateur de site statique.\n")
 
@@ -31,8 +34,6 @@ parser.add_argument("-o",
     help="create the folder containing the files converted to HTML",
     action="store_true",)
 args = parser.parse_args()
-
-print("Les fichiers Markdown ont bien été convertis en HTML.")
 
 # Appel de la fonction de conversion
 convert_MdFile_to_HTMLFile(args.input, args.output)
